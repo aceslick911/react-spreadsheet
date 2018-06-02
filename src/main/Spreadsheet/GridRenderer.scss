@@ -1,0 +1,45 @@
+
+.tabContainer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 22px;
+  border-right: 1px solid rgb(214, 214, 214);
+  border-bottom: 1px solid rgb(214, 214, 214);
+
+  .tab {
+    background: #ddd;
+    height: calc(100% - 3px);
+    width: 17px;
+    position: absolute;
+    right: 1.5px;
+    bottom: 1.5px;
+    -webkit-clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+    clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+    &:hover {
+      background: #ccc;
+    }
+  }
+}
+.headerbarContainer {
+  position: absolute;
+  left: 40px;
+  right: 16px;
+  height: 22px;
+  width: calc(100% - 40px - 16px);
+}
+.sidebarContainer {
+  position: absolute;
+  top: 22px;
+  bottom: 16px;
+  width: 40px;
+  height: calc(100% - 22px - 16px);
+}
+.sheetContainer {
+  position: absolute;
+  left: 40px;
+  top: 22px;
+  width: calc(100% - 40px);
+  height: calc(100% - 22px);
+}

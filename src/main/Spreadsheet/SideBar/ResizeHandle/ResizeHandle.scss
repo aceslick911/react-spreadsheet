@@ -1,0 +1,28 @@
+
+.container{
+  position: absolute;
+  width: 100%;
+  height: 6px;
+  bottom: -3px;
+  z-index: 2;
+  left: 0;
+
+  .resizeHandle {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    
+    .resizeLine {
+      width: 3000px;
+      height: 2px;
+      border-top: 1.5px dotted #666;
+      position: relative;
+      left: 1px;
+    }
+    
+    &:hover{
+      cursor: row-resize;
+    }
+  }
+}

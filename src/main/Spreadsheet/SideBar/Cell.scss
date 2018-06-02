@@ -1,0 +1,38 @@
+.cell {
+  border-bottom: 1px solid rgb(220, 220, 220);
+  border-right: 1px solid rgb(189, 189, 189);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #777;
+  font-weight: 400;
+  font-size: 12.5px;
+  position: relative;
+  user-select: none;
+
+  &:hover{
+    background: rgb(179, 229, 192);
+    cursor: pointer;
+  }
+
+  &.selected {
+    background: rgb(218, 218, 218);
+    border-bottom: 1px solid rgb(192, 192, 192);
+    // border-right: 2px solid rgb(0, 124, 0);
+    color: rgb(0, 124, 0);
+    font-weight: 600;
+
+    // Second solution
+    &::after {
+      box-sizing: content-box;
+      content: "";
+      background: rgb(0, 124, 0);
+      width: 2px;
+      top: 0;
+      height: calc(100% + 2px);
+      position: absolute;
+      right: -1px;
+    }
+  }
+}
