@@ -2,7 +2,6 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import Spreadsheet from './../main/Spreadsheet';
 import style from './style.scss';
-// import XLSX from 'xlsx';
 
 class Demo extends React.Component {
   state = {
@@ -42,14 +41,11 @@ class Demo extends React.Component {
     });
   }
 
-  handleSelect(selection) {
-    // console.log(selection);
-  }
+  handleSelect(selection) { }
 
   render() {
     return (
       <div className={style.demo}>
-        {/* <input type="file" onChange={handleFileSubmit} /> */}
         <h2>Spreadsheet Demo</h2>
         <div className={style.output}>
           <Spreadsheet
@@ -71,35 +67,3 @@ ReactDOM.render(
   <Demo></Demo>,
   document.getElementById('root')
 );
-
-
-/*
-function handleFileSubmit(e) {
-  const files = e.target.files;
-  if (!files || files.length == 0) return;
-  const file = files[0];
-
-  const fileReader = new FileReader();
-  fileReader.onload = function (e) {
-    var filename = file.name;
-    // pre-process data
-    var binary = "";
-    var bytes = new Uint8Array(e.target.result);
-    var length = bytes.byteLength;
-    for (var i = 0; i < length; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    // call 'xlsx' to read the file
-    var workbook = XLSX.read(binary, {type: 'binary', cellDates:true, cellStyles:true});
-    console.log(workbook);
-    console.log(workbook.Sheets.Sheet1['!cols']);
-    console.log(workbook.Sheets.Sheet1['!rows']);
-
-    let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    let data = XLSX.utils.sheet_to_json(first_worksheet, {header: 1});
-    console.log('sheet_to_json:');
-    console.log(data);
-  };
-  fileReader.readAsArrayBuffer(file);
-}
-*/
