@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom';
-import React from 'react';
+import React, { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import Spreadsheet from './../main/Spreadsheet';
 import style from './style.scss';
 
-class Demo extends React.Component {
-  state = {
+const Demo = () => {
+  const [state, setState] = useState({
     columnsFormat: [202, , 90, , 202],
     rowsFormat: [36.25, , , 27],
     cellData: [
@@ -12,55 +12,62 @@ class Demo extends React.Component {
       ['Umeå', 'Kalmar', 'Stockholm', 'Göteborg'],
       ['1', '2', '3', 4, 5]
     ]
-  }
+  });
 
-  handleColumnResize = ({ columnIndex, size }) => {
-    this.setState((prevState) => {
-      let newColumnsFormat = [...prevState.columnsFormat];
-      newColumnsFormat[columnIndex] = size;
-      return { columnsFormat: newColumnsFormat };
+  const handleColumnResize = ({ columnIndex, size }) => {
+
+    let newColumnsFormat = [...state.columnsFormat];
+    newColumnsFormat[columnIndex] = size;
+    setState({
+      ...state,
+      columnsFormat: newColumnsFormat
     });
-  }
+  };
 
-  handleRowResize = ({ rowIndex, size }) => {
-    this.setState((prevState) => {
-      let newRowsFormat = [...prevState.rowsFormat];
-      newRowsFormat[rowIndex] = size;
-      return { rowsFormat: newRowsFormat };
-    });
-  }
+  const handleRowResize = ({ rowIndex, size }) => {
 
-  handleCellChange = ({value, rowIndex, columnIndex}) => {
-    this.setState((prevState) => {
-      let newCellData = [...prevState.cellData];
-      if (typeof newCellData[rowIndex] === 'undefined') {
-        newCellData[rowIndex] = [];
-      }
-      newCellData[rowIndex][columnIndex] = value;
-      return { cellData: newCellData };
-    });
-  }
+    let newRowsFormat = [...state.rowsFormat];
+    newRowsFormat[rowIndex] = size;
+    setState({
+      ...state,
+      rowsFormat: newRowsFormat
+    })
 
-  handleSelect(selection) { }
+  };
 
-  render() {
-    return (
-      <div className={style.demo}>
-        <h2>Spreadsheet Demo</h2>
-        <div className={style.output}>
-          <Spreadsheet
-            columnsFormat={this.state.columnsFormat}
-            rowsFormat={this.state.rowsFormat}
-            cellData={this.state.cellData}
-            onCellChange={this.handleCellChange}
-            onColumnResize={this.handleColumnResize}
-            onRowResize={this.handleRowResize}
-            onSelect={this.handleSelect}
-          ></Spreadsheet>
-        </div>
+  const handleCellChange = ({ value, rowIndex, columnIndex }) => {
+
+    let newCellData = [...state.cellData];
+    if (typeof newCellData[rowIndex] === 'undefined') {
+      newCellData[rowIndex] = [];
+    }
+    newCellData[rowIndex][columnIndex] = value;
+    setState({
+      ...state,
+      cellData: newCellData
+    })
+
+  };
+
+  const handleSelect = (selection) => { };
+
+  return (
+    <div className={style.demo}>
+      <h2>Spreadsheet Demo</h2>
+      <div className={style.output}>
+        <Spreadsheet
+          columnsFormat={state.columnsFormat}
+          rowsFormat={state.rowsFormat}
+          cellData={state.cellData}
+          onCellChange={handleCellChange}
+          onColumnResize={handleColumnResize}
+          onRowResize={handleRowResize}
+          onSelect={handleSelect}
+        ></Spreadsheet>
       </div>
-    );
-  }
+    </div>
+  );
+
 }
 
 ReactDOM.render(
