@@ -31,7 +31,6 @@ const Spreadsheet = ({
 
   // Initial state.
   const [state, setState] = useState({
-    isSelecting: false,
     selection: {
       startSelection: {
         rowIndex: -1,
@@ -42,11 +41,7 @@ const Spreadsheet = ({
         columnIndex: -1,
       },
     },
-    insertMode: 'substitute', // 'substitute' or 'edit'
-    activeCell: {
-      rowIndex: -1,
-      columnIndex: -1,
-    },
+
     forceScroll: {
       horizontal: 0,
       vertical: 0,
@@ -57,6 +52,16 @@ const Spreadsheet = ({
 
   const [numberOfColumns, setNumberofColumns] = useState(0);
   const [numberOfRows, setnumberOfRows] = useState(0);
+
+  const [editMode, setEditMode] = useState({
+    insertMode: 'substitute', // 'substitute' or 'edit'
+    activeCell: {
+      rowIndex: -1,
+      columnIndex: -1,
+    }
+  });
+
+  const [isSelecting, setSelecting] = useState(false);
 
   const sheetRef = useRef(null);
 
@@ -74,11 +79,6 @@ const Spreadsheet = ({
       shouldRecomputateGridSize: false,
     });
 
-    // useEffect(() => {
-    //   setState({
-    //     shouldRecomputateGridSize: false,
-    //   });
-    // });
   }, [columnsFormat, rowsFormat]);
 
 
@@ -172,8 +172,7 @@ const Spreadsheet = ({
         columnIndex,
       },
     });
-    setState({
-      ...state,
+    setEditMode({
       insertMode: 'substitute',
       activeCell: {
         rowIndex: 0,
@@ -196,8 +195,7 @@ const Spreadsheet = ({
         columnIndex: Number.POSITIVE_INFINITY,
       },
     });
-    setState({
-      ...state,
+    setEditMode({
       insertMode: 'substitute',
       activeCell: {
         rowIndex,
@@ -237,9 +235,10 @@ const Spreadsheet = ({
       startSelection: { rowIndex, columnIndex },
       endSelection: { rowIndex, columnIndex }
     });
-    setState({
-      ...state,
-      isSelecting: true,
+
+    setSelecting(true);
+
+    setEditMode({
       insertMode: 'substitute',
       activeCell: {
         rowIndex,
@@ -298,9 +297,9 @@ const Spreadsheet = ({
   };
 
   const handleMouseUp = () => {
+    setSelecting(false);
     setState({
       ...state,
-      isSelecting: false,
       forceScroll: {
         ...state.forceScroll,
         horizontal: 0,
@@ -310,7 +309,7 @@ const Spreadsheet = ({
   };
 
   const handleCellMouseOver = ({ rowIndex, columnIndex }) => {
-    if (state.isSelecting) {
+    if (isSelecting) {
       setSelection({
         endSelection: {
           rowIndex,
@@ -349,8 +348,7 @@ const Spreadsheet = ({
   };
 
   const handleCellDoubleClick = ({ rowIndex, columnIndex }) => {
-    setState({
-      ...state,
+    setEditMode({
       insertMode: 'edit',
       activeCell: {
         rowIndex,
@@ -384,7 +382,7 @@ const Spreadsheet = ({
       ref={sheetRef}
     >
       <SpreadSheetRenderer
-        activeCell={state.activeCell}
+        activeCell={editMode.activeCell}
         forceScroll={state.forceScroll}
         getColumnWidth={getColumnWidth}
         getRowHeight={getRowHeight}
