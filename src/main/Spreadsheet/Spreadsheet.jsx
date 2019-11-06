@@ -2,7 +2,7 @@
  * Container component. Handles the state and logic necessary
  * for selection, resizing, scroll, etc.
  */
-import React from 'react';
+import React, { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import reset from './reset.scss';
 import PropTypes from 'prop-types';
 import SpreadSheetRenderer from './SpreadSheetRenderer';
@@ -17,17 +17,17 @@ const CONFIG = {
   SCROLL_STEP: 20,      // Size of scrolling step.
 };
 
-class Spreadsheet extends React.Component {
-  static defaultProps = {
+const Spreadsheet = (props) => {
+  const defaultProps = {
     defaultColumnWidth: 64,
     defaultRowHeight: 20,
-    onColumnResize: function() {},
-    onRowResize: function() {},
-    onCellChange: function() {},
-  }
+    onColumnResize: function () { },
+    onRowResize: function () { },
+    onCellChange: function () { },
+  };
 
   // Initial state.
-  state = {
+  const [state, setState] = useState({
     numberOfColumns: 0,
     numberOfRows: 0,
     isSelecting: false,
@@ -52,12 +52,9 @@ class Spreadsheet extends React.Component {
       interval: CONFIG.SCROLL_INTERVAL,
     },
     shouldRecomputateGridSize: false,
-  }
+  });
 
-  constructor(props) {
-    super(props);
-    this.sheetRef = React.createRef();
-  }
+  const sheetRef = useRef(null);
 
   componentWillReceiveProps = (nextProps) => {
     // When a resize of columns or rows is being made the grid components(header/sidebar/sheet)
@@ -76,13 +73,16 @@ class Spreadsheet extends React.Component {
     }
   }
 
-  componentDidMount = () => {
-    document.addEventListener('mouseup', this.handleMouseUp);
-  }
 
-  componentWillUnmount = () => {
-    document.removeEventListener('mouseup', this.handleMouseUp);
-  }
+  const componentDidMount = useEffect(() => {
+    document.addEventListener('mouseup', handleMouseUp);
+
+    // componentWillUnmount
+    return () => {
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  });
+
 
   /**
    * Width of the specified column
@@ -295,57 +295,58 @@ class Spreadsheet extends React.Component {
     }));
   }
 
-  handleCellMouseOver = ({rowIndex, columnIndex}) => {
-    if (this.state.isSelecting) {
-      this.setSelection({
+  const handleCellMouseOver = ({ rowIndex, columnIndex }) => {
+    if (state.isSelecting) {
+      setSelection({
         endSelection: {
           rowIndex,
           columnIndex,
         }
       });
     }
-  }
+  };
 
-  handleRowSelect = (rowIndex) => {
-    this.selectRow(rowIndex);    
-  }
+  const handleRowSelect = (rowIndex) => {
+    selectRow(rowIndex);
+  };
 
-  handleColumnSelect = (columnIndex) => {
-    this.selectColumn(columnIndex);
-  }
+  const handleColumnSelect = (columnIndex) => {
+    selectColumn(columnIndex);
+  };
 
-  handleColumnResize = ({columnIndex, offset}) => {
-    const currentWidth = this.getColumnWidth({ index: columnIndex });
+  const handleColumnResize = ({ columnIndex, offset }) => {
+    const currentWidth = getColumnWidth({ index: columnIndex });
     if (currentWidth + offset > 0) {
-      this.props.onColumnResize({
+      props.onColumnResize({
         size: currentWidth + offset,
         columnIndex: columnIndex
       });
     }
-  }
+  };
 
-  handleRowResize = ({rowIndex, offset}) => {
-    const currentHeight = this.getRowHeight({ index: rowIndex });
-    if (currentHeight + offset > 0){
-      this.props.onRowResize({
+  const handleRowResize = ({ rowIndex, offset }) => {
+    const currentHeight = getRowHeight({ index: rowIndex });
+    if (currentHeight + offset > 0) {
+      props.onRowResize({
         size: currentHeight + offset,
         rowIndex: rowIndex
       });
     }
-  }
+  };
 
-  handleCellDoubleClick = ({rowIndex, columnIndex}) => {
-    this.setState({
+  const handleCellDoubleClick = ({ rowIndex, columnIndex }) => {
+    setState({
+      ...state,
       insertMode: 'edit',
       activeCell: {
         rowIndex,
         columnIndex,
       }
     });
-  }
+  };
 
-  handleSelectAll = () => {
-    this.setSelection({
+  const handleSelectAll = () => {
+    setSelection({
       startSelection: {
         rowIndex: 0,
         columnIndex: 0,
@@ -355,44 +356,43 @@ class Spreadsheet extends React.Component {
         columnIndex: Number.POSITIVE_INFINITY,
       },
     });
-  }
+  };
 
   // ToDo
-  handleCellChange = ({value, rowIndex, columnIndex}) => {
-    this.props.onCellChange({value, rowIndex, columnIndex});
-  }
+  const handleCellChange = ({ value, rowIndex, columnIndex }) => {
+    props.onCellChange({ value, rowIndex, columnIndex });
+  };
 
-  render() {
+
     return (
       <div
-        style={{height: '100%', position: 'relative'}}
-        ref={this.sheetRef}
+      style={{ height: '100%', position: 'relative' }}
+      ref={sheetRef}
       >
         <SpreadSheetRenderer
-          activeCell={this.state.activeCell}
-          forceScroll={this.state.forceScroll}
-          getColumnWidth={this.getColumnWidth}
-          getRowHeight={this.getRowHeight}
-          getCellValue={this.getCellValue}
-          numberOfColumns={this.state.numberOfColumns}
-          numberOfRows={this.state.numberOfRows}
-          onCellChange={this.handleCellChange}
-          onCellSelect={this.handleCellSelect}
-          onCellMouseOver={this.handleCellMouseOver}
-          onCellDoubleClick={this.handleCellDoubleClick}
-          onColumnSelect={this.handleColumnSelect}
-          onColumnResize={this.handleColumnResize}
-          onRowSelect={this.handleRowSelect}
-          onSelectAll={this.handleSelectAll}
-          onScrollMaster={this.handleScroll}
-          onRowResize={this.handleRowResize}
-          selection={this.state.selection}
-          shouldRecomputateGridSize={this.state.shouldRecomputateGridSize}
+        activeCell={state.activeCell}
+        forceScroll={state.forceScroll}
+        getColumnWidth={getColumnWidth}
+        getRowHeight={getRowHeight}
+        getCellValue={getCellValue}
+        numberOfColumns={state.numberOfColumns}
+        numberOfRows={state.numberOfRows}
+        onCellChange={handleCellChange}
+        onCellSelect={handleCellSelect}
+        onCellMouseOver={handleCellMouseOver}
+        onCellDoubleClick={handleCellDoubleClick}
+        onColumnSelect={handleColumnSelect}
+        onColumnResize={handleColumnResize}
+        onRowSelect={handleRowSelect}
+        onSelectAll={handleSelectAll}
+        onScrollMaster={handleScroll}
+        onRowResize={handleRowResize}
+        selection={state.selection}
+        shouldRecomputateGridSize={state.shouldRecomputateGridSize}
         ></SpreadSheetRenderer>
       </div>
     );
-  }
-}
+};
 
 Spreadsheet.propTypes = {
   columnsFormat: PropTypes.oneOfType([
