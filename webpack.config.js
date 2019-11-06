@@ -6,8 +6,8 @@ const path = require('path');
 module.exports = env => {
   const isProd = env.NODE_ENV === 'production';
   // Fix
-  const entry = isProd ? './src/demo/demo.jsx': './src/demo/demo.jsx';
-  
+  const entry = isProd ? './src/demo/demo.js' : './src/demo/demo.js';
+
   const config = {
     mode: env.NODE_ENV,
     entry: entry,
