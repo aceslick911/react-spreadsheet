@@ -33,12 +33,13 @@ module.exports = env => {
           use: {
             loader: 'babel-loader'
           }
-        },
-        {
+        }, {
           test: /\.scss$/,
           use: [{
+
             loader: 'style-loader'
           }, {
+
             loader: 'css-loader',
             options: {
               importLoaders: 1,
@@ -48,6 +49,27 @@ module.exports = env => {
           }, {
             loader: 'sass-loader'
           }]
+
+
+        },
+        {
+          test: /\.less$/,
+          use: [
+            {
+              loader: 'style-loader'
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+                modules: true,
+                localIdentName: '[local]___[hash:base64:5]'
+              }
+            },
+            {
+              loader: 'less-loader'
+            }
+          ]
         },
         {
           test: /\.css$/,
