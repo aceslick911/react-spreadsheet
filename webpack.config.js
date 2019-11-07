@@ -35,19 +35,23 @@ module.exports = env => {
           }
         },
         {
-          test: /\.scss$/,
-          use: [{
-            loader: 'style-loader'
-          }, {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-              modules: true,
-              localIdentName: '[name]__[local]___[hash:base64:5]',
+          test: /\.less$/,
+          use: [
+            {
+              loader: 'style-loader'
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+                modules: true,
+                localIdentName: '[local]___[hash:base64:5]'
+              }
+            },
+            {
+              loader: 'less-loader'
             }
-          }, {
-            loader: 'sass-loader'
-          }]
+          ]
         },
         {
           test: /\.css$/,

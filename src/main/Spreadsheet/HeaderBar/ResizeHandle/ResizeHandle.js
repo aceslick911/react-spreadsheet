@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './ResizeHandle.scss';
+import style from './ResizeHandle.less';
 import ReactDOM from 'react-dom';
 
 class ResizeHandle extends React.PureComponent {
@@ -19,20 +19,20 @@ class ResizeHandle extends React.PureComponent {
     let position = e.clientX;
     document.addEventListener('mouseup', closeDragElement);
     document.addEventListener('mousemove', handleElementDrag);
-    
+
     this.setState({
       showResizeLine: true,
       isResizing: true,
       startResizePos: position,
     });
-    
+
     function handleElementDrag(e) {
       const offset = position - e.clientX;
       position = e.clientX;
       element.style.left = (element.offsetLeft - offset) + 'px';
       element.style.position = 'absolute';
     }
-    
+
     const _this = this;
     function closeDragElement(e) {
       document.removeEventListener('mouseup', closeDragElement);
@@ -57,13 +57,13 @@ class ResizeHandle extends React.PureComponent {
       <div
         className={style.container}
       >
-        <div 
+        <div
           ref={this.draggableRef}
           className={style.resizeHandle}
           onMouseDown={this.handleMouseDown}
           onClick={this.handleClick}
         >
-          { this.state.showResizeLine ? <div className={style.resizeLine}></div> : null }
+          {this.state.showResizeLine ? <div className={style.resizeLine}></div> : null}
         </div>
       </div>
     );

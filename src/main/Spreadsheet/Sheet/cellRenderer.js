@@ -1,5 +1,5 @@
 import React from 'react';
-import styleSheet from './cellRenderer.scss';
+import styleSheet from './cellRenderer.less';
 import classNames from 'classnames';
 
 // ToDo: refactor to a class.
@@ -28,7 +28,7 @@ export default function cellRenderer({ columnIndex, rowIndex, key, style, parent
   }
 
   const cellStyle = calculateCellStyle(
-    {column: columnIndex, row: rowIndex},
+    { column: columnIndex, row: rowIndex },
     parent.props.selectedArea,
     parent.props.activeCell
   );
@@ -56,8 +56,8 @@ export default function cellRenderer({ columnIndex, rowIndex, key, style, parent
       onMouseDown={handleMouseDown}
       onDoubleClick={handleDoubleClick}
       onMouseOver={handleMouseOver}
-      // Prevent the textarea from being selected on single click. Capture phase.
-      //onMouseDownCapture={e => e.preventDefault()}
+    // Prevent the textarea from being selected on single click. Capture phase.
+    //onMouseDownCapture={e => e.preventDefault()}
     >
       <textarea
         onChange={handleChange}
@@ -82,7 +82,7 @@ function calculateCellStyle(position, selectedArea, activeCell) {
     // Not inside
     return style;
   }
-  
+
   // Aligned to top?
   if (position.row === selectedArea.y1) {
     style.hasBorderTop = true;
