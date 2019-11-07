@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import React, { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import Spreadsheet from './../main/Spreadsheet';
-import style from './style.scss';
+import style from './style.less';
 
 const Demo = () => {
   const [state, setState] = useState({

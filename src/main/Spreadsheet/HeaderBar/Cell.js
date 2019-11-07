@@ -1,6 +1,6 @@
 import React from 'react';
 import ResizeHandle from './ResizeHandle/ResizeHandle';
-import style from './Cell.scss';
+import style from './Cell.less';
 import util from '../util';
 
 export default class Cell extends React.PureComponent {
