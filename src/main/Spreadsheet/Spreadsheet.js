@@ -3,7 +3,7 @@
  * for selection, resizing, scroll, etc.
  */
 import React, { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
-import reset from './reset.scss';
+import reset from './reset.less';
 import PropTypes from 'prop-types';
 import SpreadSheetRenderer from './SpreadSheetRenderer';
 import util from './util';

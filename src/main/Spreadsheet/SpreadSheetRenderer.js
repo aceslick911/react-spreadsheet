@@ -3,13 +3,13 @@ import { ScrollSync } from 'react-virtualized';
 import Sheet from './Sheet/index';
 import HeaderBar from './HeaderBar/index';
 import SideBar from './SideBar/index';
-import style from './GridRenderer.scss';
+import style from './GridRenderer.less';
 
 /**
  * Wraps the HeaderBar, SideBar and Sheet and provides synchronized scrolling functionality
  * between them by utilizing the higer order component ScrollSync.
  */
-export default function SpreadSheetRenderer ({
+export default function SpreadSheetRenderer({
   activeCell,
   forceScroll,
   getColumnWidth,
@@ -82,7 +82,7 @@ export default function SpreadSheetRenderer ({
               columnWidth={getColumnWidth}
               forceScroll={forceScroll}
               getCellValue={getCellValue}
-              onScroll={(args) => {onScroll(args); onScrollMaster(args);}}
+              onScroll={(args) => { onScroll(args); onScrollMaster(args); }}
               onCellChange={onCellChange}
               onCellSelect={onCellSelect}
               onCellMouseOver={onCellMouseOver}

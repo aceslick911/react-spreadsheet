@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import { Grid, AutoSizer } from 'react-virtualized';
 import cellRenderer from './cellRenderer';
-import style from './Sheet.scss';
+import style from './Sheet.less';
 import * as _ from 'lodash';
 
 const Sheet = ({

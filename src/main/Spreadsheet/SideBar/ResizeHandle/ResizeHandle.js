@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './ResizeHandle.scss';
+import style from './ResizeHandle.less';
 import ReactDOM from 'react-dom';
 
 class ResizeHandle extends React.PureComponent {
@@ -56,12 +56,12 @@ class ResizeHandle extends React.PureComponent {
       <div
         className={style.container}
       >
-        <div 
+        <div
           className={style.resizeHandle}
           onMouseDown={this.handleMouseDown}
           onClick={this.handleClick}
         >
-          { this.state.showResizeLine ? <div className={style.resizeLine}></div> : null }
+          {this.state.showResizeLine ? <div className={style.resizeLine}></div> : null}
         </div>
       </div>
     );

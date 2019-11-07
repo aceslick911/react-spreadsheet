@@ -1,6 +1,6 @@
 import React from 'react';
 import ResizeHandle from './ResizeHandle/ResizeHandle';
-import style from './Cell.scss';
+import style from './Cell.less';
 
 export default class Cell extends React.PureComponent {
   constructor(props) {
@@ -29,7 +29,7 @@ export default class Cell extends React.PureComponent {
         className={classes}
         onClick={this.handleClick}
       >
-        { this.props.rowIndex }
+        {this.props.rowIndex}
         <ResizeHandle
           onResize={this.handleResize}
         ></ResizeHandle>
